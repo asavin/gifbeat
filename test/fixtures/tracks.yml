@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  sound_id: MyString
+  name: MyString
+  mood_id: 1
+
+two:
+  sound_id: MyString
+  name: MyString
+  mood_id: 1

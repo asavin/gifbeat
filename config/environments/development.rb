@@ -34,4 +34,10 @@ Gifbeat::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+    
+  #TWITTER_CONSUMER_KEY = 'Qgi3yTWXYDtd2FA4I2RpLA'
+  #TWITTER_CONSUMER_SECRET = 'E5pD0fJhjVJ0tDuvZI9SCCx7WaV1nPY4PNz1umZ2qo'
+  #TWITTER_OAUTH_TOKEN
+  #TWITTER_OAUTH_TOKEN_SECRET
+
 end
