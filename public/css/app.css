@@ -1,0 +1,81 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  background: url('../gfx/backgroundmosaic.jpg') no-repeat top left;
+}
+
+h1, #keywords {
+  color: white;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: 72px;
+}
+
+#main {
+  float: none;
+  clear: both;
+  padding: 20px;
+}
+
+#globe {
+}
+
+#keywords {
+  font-size: 26px;
+  letter-spacing: 3px;
+  font-weight: 500;
+  text-align: center;
+}
+
+#keywords li {
+  list-style: none;
+  display: inline;
+}
+
+#keywords a {
+  color: white;
+  text-decoration: none;
+}
+
+#globe {
+  width: 500px;
+  float: left;
+  margin-right: 20px;
+}
+
+#controls {
+  width: 500px;
+  float: left;
+}
+
+#inputs {
+  padding-bottom: 20px;
+}
+
+#inputs input {
+  width: 375px;
+  margin-right: 20px;
+}
+
+#inputs input, #inputs button {
+  border: 0;
+  padding: 16px;
+  font-size: 22px;
+}
+
+#inputs button {
+  border: 0;
+  background-color: black;
+  color: white;
+}
+
+#inputs button:hover {
+  background-color: #333;
+}
+
+
+#playerArea {
+  
+}
