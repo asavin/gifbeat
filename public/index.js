@@ -103,8 +103,8 @@ function webGLStart() {
 //center to coordinates
 function centerMap(lat, lng) {
  var  earth = models.earth,
-      phi = pos[3],
-      theta = pos[4],
+      phi = lat,
+      theta = lng,
       phiPrev = geom.phi || Math.PI / 2,
       thetaPrev = geom.theta || (3 * Math.PI / 2),
       phiDiff = phi - phiPrev,
