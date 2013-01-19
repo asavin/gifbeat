@@ -2,6 +2,12 @@ Gifbeat::Application.routes.draw do
   get "pages/home"
 
   get "pages/about"
+  
+  get "sounds/getsound" => "sounds#getsound", :as => :getsound
+  
+  get "sounds/mood" => "sounds#mood", :as => :mood
+  get "sounds/analyse_status" => "sounds#analyse_status", :as => :analyse_status
+  get "tweets" => "sounds#tweets", :as => :tweets
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
