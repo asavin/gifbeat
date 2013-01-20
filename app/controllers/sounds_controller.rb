@@ -39,6 +39,7 @@ class SoundsController < ApplicationController
             logger.info params[:search_url]
             track = client.get('/resolve', :url => params[:search_url])
             sound_url = track.download_url
+            logger.debug sound_url
             url = sound_url.to_s + '?client_id=13801a472d3f0fcc41f7fcd1158253a4'    
         end
         
@@ -46,17 +47,20 @@ class SoundsController < ApplicationController
         
         # Before sending the request we can check from our db if this track is already analyzed
         track = Track.find_by_source_id(sound_url)
-        if track.nil?
+        logger.debug "Do we have a track?"
+        logger.debug track
+        
+        if Track.find_by_source_id(sound_url).nil?
         
             response = HTTParty.post('http://developer.echonest.com/api/v4/track/upload', :body => { :url=> url, :api_key => 'TKHSBUNPSWPRLPUBK'})
             if(response.code == 200)
                 json = JSON.parse(response.body)
                 Track.create(:sound_id => json['response']['track']['id'], :source_id => sound_url)
-                #return_hash = Hash[:status => 
+                return_hash = Hash[:status => response.code, :sound_url => sound_url]
             end
             respond_to do |format|
                 format.json {
-                    render json: response.body, :status => :ok
+                    render json: return_hash, :status => :ok
                 }
             end
         else
@@ -128,7 +132,7 @@ class SoundsController < ApplicationController
                 geo = Geocoder.search(tweet.user.location)
                 unless geo.first.nil? || geo.first.geometry.nil?
                     logger.debug geo.first.geometry
-                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :place => tweet.user.location, :id => tweet.id]
+                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :place => tweet.user.location, :id => tweet.id, :name => tweet.user.screen_name]
                     filtered << hhhash
                 end
                 
