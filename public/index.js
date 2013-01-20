@@ -11,7 +11,7 @@ function webGLStart() {
     uniforms: {
       shininess: 32
     },
-    textures: ['earth.jpg', 'earth-specular.gif'],
+    textures: ['earthbw.jpg', 'earth-specular.gif'],
     colors: [1, 1, 1, 1]
   });
   
@@ -29,7 +29,7 @@ function webGLStart() {
       }
     },
     textures: {
-      src: ['earth.jpg', 'earth-specular.gif'],
+      src: ['earthbw.jpg', 'earth-specular.gif'],
       parameters: [{
         name: 'TEXTURE_MAG_FILTER',
         value: 'LINEAR'
@@ -48,9 +48,9 @@ function webGLStart() {
           scene = app.scene,
           canvas = app.canvas,
           ambient = {
-            r: 0.8,
-            g: 0.8,
-            b: 0.8
+            r: 1.0,
+            g: 0.3,
+            b: 1.0
           };
         //object rotation
       geom.phi = Math.PI;
