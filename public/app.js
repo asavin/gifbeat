@@ -22,7 +22,7 @@ function getMood(songUrl, downloadUrl) {
       setTimeout(function() {
         
         if (!downloadUrl) {
-          SC.oEmbed(songUrl, document.getElementById('player'));
+          changePlayer(songUrl);
         }
         var downUrl = data['sound_url'];
         if (downUrl) {
@@ -41,14 +41,21 @@ function getMood(songUrl, downloadUrl) {
   });
 }
 
+function changePlayer(url) {
+    console.log('CHANING URL:', url);
+    document.getElementById('player').src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url);
+    setTimeout(function() {
+      player.play();
+    }, 1000);
+}
+
 function getSCData(songUrl) {
   $.ajax({
     url: "sounds/getsound.json",
     success: function(data) {
       var permaUrl = data['permalink_url'];
-      // EMBED IT!!!
-      console.log('PARME URL: ', permaUrl);
-      SC.oEmbed(permaUrl, document.getElementById('player'));
+      
+      changePlayer(permaUrl);
 
       getMood(data['download_url'], true);
     },
