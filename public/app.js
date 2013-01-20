@@ -92,7 +92,7 @@ var TweetManager = (function() {
     
     // OUTPUT NET TWEET
     console.log(newTweet);
-    displayTweet('http://twitter.com/foo/status/'+newTweet.id, newTweet.location.lat, newTweet.location.lng, '');
+    displayTweet('https://twitter.com/'+newTweet.name+'/status/'+newTweet.id, newTweet.location.lat, newTweet.location.lng, '');
     
     timer = setTimeout(function() {
       switchTweet();
