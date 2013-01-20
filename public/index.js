@@ -359,6 +359,8 @@ function displayTweet(url, lat, long, locationName) {
   a.style.lineHeight = '500px';
   a.style.display = 'block';
 
+  a.innerHTML = locationName;
+
   document.getElementById("globe").appendChild(a);
 
   
