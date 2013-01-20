@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130119165130) do
+ActiveRecord::Schema.define(:version => 20130120001623) do
 
   create_table "moods", :force => true do |t|
     t.string   "name"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20130119165130) do
     t.integer  "mood_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "source_id"
   end
 
 end

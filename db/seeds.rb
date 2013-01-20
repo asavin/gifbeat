@@ -5,3 +5,10 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Mood.create(:name => 'happy')
+Mood.create(:name => 'sad')
+Mood.create(:name => 'angry')
+Mood.create(:name => 'cool')
+Mood.create(:name => 'excited')
+Mood.create(:name => 'relaxed')

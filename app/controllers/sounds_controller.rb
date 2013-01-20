@@ -30,24 +30,36 @@ class SoundsController < ApplicationController
     def mood
         #SoundCloud download url
         url = params[:sound_url] + '?client_id=13801a472d3f0fcc41f7fcd1158253a4'
-        response = HTTParty.post('http://developer.echonest.com/api/v4/track/upload', :body => { :url=> url, :api_key => 'TKHSBUNPSWPRLPUBK'})
-        if(response.code == 200)
-            json = JSON.parse(response.body)
-            Track.create(:sound_id => json['response']['track']['id'])
-        end
-        respond_to do |format|
-            format.json {
-                render json: response.body
-            }
-        end
         
+        # Before sending the request we can check from our db if this track is already analyzed
+        if Track.find_by_source_id(params[:sound_url]).nil?
+        
+            response = HTTParty.post('http://developer.echonest.com/api/v4/track/upload', :body => { :url=> url, :api_key => 'TKHSBUNPSWPRLPUBK'})
+            if(response.code == 200)
+                json = JSON.parse(response.body)
+                Track.create(:sound_id => json['response']['track']['id'], :source_id => params[:sound_url])
+            end
+            respond_to do |format|
+                format.json {
+                    render json: response.body, :status => :ok
+                }
+            end
+        else
+            # We have already cached this request, cool!
+            response = "This track is already analyzed!"
+            respond_to do |format|
+                format.json {
+                    render json: response, :status => :created
+                }
+            end
+        end
         
         #response = HTTParty.post('http://developer.echonest.com/api/v4/track/upload', :body => { :url=> 'http://api.soundcloud.com/tracks/69942117/download?client_id=13801a472d3f0fcc41f7fcd1158253a4', :api_key => 'TKHSBUNPSWPRLPUBK'})
     end
     
     def analyse_status
-        # Using the latest track ID
-        url = 'http://developer.echonest.com/api/v4/track/profile?' + 'api_key=TKHSBUNPSWPRLPUBK&id=' + Track.last.sound_id
+        track = Track.find_by_source_id(params[:sound_url])
+        url = 'http://developer.echonest.com/api/v4/track/profile?' + 'api_key=TKHSBUNPSWPRLPUBK&id=' + track.sound_id
         response = HTTParty.get(url)
         
         respond_to do |format|
@@ -59,35 +71,49 @@ class SoundsController < ApplicationController
     
     def tweets
         # Let's get sound profile from the EchoNest
-        url = 'http://developer.echonest.com/api/v4/track/profile?' + 'api_key=TKHSBUNPSWPRLPUBK&id=' + Track.last.sound_id + '&bucket=audio_summary'
-        response = HTTParty.get(url)
-        json = JSON.parse(response.body)
+        # but only if this was not done before
+        track = Track.find_by_source_id(params[:sound_url])
+        if track.nil? || track.mood_id.nil?
         
-        # Here we do the mood mapping (TODO: move all this stuff to models)
-        # First version very ugly hack mapping stuff
-        
-        case json['response']['track']['audio_summary']['energy']
-            when 0..0.5
-                mood = 'sad'
-            when 0.51..1
-                mood = 'happy'
-            else
-                logger.debug "Not sure what's going on, value out of 0-1 range"
-                mood='indescribable'
+            url = 'http://developer.echonest.com/api/v4/track/profile?' + 'api_key=TKHSBUNPSWPRLPUBK&id=' + Track.last.sound_id + '&bucket=audio_summary'
+            response = HTTParty.get(url)
+            json = JSON.parse(response.body)
+            
+            # Here we do the mood mapping (TODO: move all this stuff to models)
+            # First version very ugly hack mapping stuff
+            
+            case json['response']['track']['audio_summary']['energy']
+                when 0..0.3
+                    mood = 'sad'
+                when 0.31..0.5
+                    mood='relaxed'
+                when 0.51..0.8
+                    mood = 'happy'
+                when 0.81..1
+                    mood='excited'
+                else
+                    logger.debug "Not sure what's going on, value out of 0-1 range"
+                    mood='indescribable'
+            end
+            
+            track.mood_id = Mood.find_by_name(mood).id
+            track.save
+            
+            logger.debug mood
+        else
+            mood = Mood.find(track.mood_id).name
         end
         
-        logger.debug mood
-        
         # Now let's do some Twitter search based on the mood
-        r = Twitter.search(mood, :count => 20)
+        r = Twitter.search(mood, :count => 10)
         filtered = Array.new
         
         r.results.each do |tweet|
             unless tweet.user.location.empty?
                 geo = Geocoder.search(tweet.user.location)
-                unless geo.first.nil?
-                    logger.debug geo.first
-                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['bounds']['northeast'], :id => tweet.id]
+                unless geo.first.nil? || geo.first.geometry.nil?
+                    logger.debug geo.first.geometry
+                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :id => tweet.id]
                     filtered << hhhash
                 end
                 
