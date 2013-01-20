@@ -20,6 +20,14 @@ function getMood(songUrl, downloadUrl) {
     url: "sounds/mood.json?" + arg + "_url=" + encodeURIComponent(songUrl),
     success: function(data) {
       setTimeout(function() {
+        
+        if (!downloadUrl) {
+          SC.oEmbed(songUrl, document.getElementById('player'));
+        }
+        var downUrl = data['sound_url'];
+        if (downUrl) {
+          songUrl = downUrl;
+        }
         TweetManager.init(songUrl); // USE data...download_url instead!
       }, 5000);
     },
@@ -37,6 +45,11 @@ function getSCData(songUrl) {
   $.ajax({
     url: "sounds/getsound.json",
     success: function(data) {
+      var permaUrl = data['permalink_url'];
+      // EMBED IT!!!
+      console.log('PARME URL: ', permaUrl);
+      SC.oEmbed(permaUrl, document.getElementById('player'));
+
       getMood(data['download_url'], true);
     },
     error: function() {
