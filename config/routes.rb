@@ -4,10 +4,16 @@ Gifbeat::Application.routes.draw do
   get "pages/about"
   
   get "sounds/getsound" => "sounds#getsound", :as => :getsound
+  get "getsound" => "sounds#getsound"
   
   get "sounds/mood" => "sounds#mood", :as => :mood
+  get "mood" => "sounds#mood"
+  
   get "sounds/analyse_status" => "sounds#analyse_status", :as => :analyse_status
+  get "analyse_status" => "sounds#analyse_status"
+  
   get "tweets" => "sounds#tweets", :as => :tweets
+  get "cached_sounds" => "sounds#cached_sounds"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

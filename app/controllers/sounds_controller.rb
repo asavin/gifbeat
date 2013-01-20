@@ -35,9 +35,14 @@ class SoundsController < ApplicationController
         elsif (params[:search_url])
             # assuming this is a SoundCloud track url
             # let's resolve this into a download url first
+            client = Soundcloud.new(:client_id => '13801a472d3f0fcc41f7fcd1158253a4')
+            logger.info params[:search_url]
             track = client.get('/resolve', :url => params[:search_url])
             sound_url = track.download_url
+            url = sound_url.to_s + '?client_id=13801a472d3f0fcc41f7fcd1158253a4'    
         end
+        
+        
         
         # Before sending the request we can check from our db if this track is already analyzed
         if Track.find_by_source_id(sound_url).nil?
@@ -121,7 +126,7 @@ class SoundsController < ApplicationController
                 geo = Geocoder.search(tweet.user.location)
                 unless geo.first.nil? || geo.first.geometry.nil?
                     logger.debug geo.first.geometry
-                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :id => tweet.id]
+                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :place => tweet.user.location, :id => tweet.id]
                     filtered << hhhash
                 end
                 
@@ -135,6 +140,26 @@ class SoundsController < ApplicationController
             }
         end
         
+    end
+    
+    def cached_sounds
+        tracks = Track.all
+        mood_sounds = Array.new
+        
+        tracks.each do |track|
+            unless track.mood_id.nil?
+                mood = Mood.find(track.mood_id).name
+            end
+            unless track.source_id.nil? || track.mood_id.nil?
+                mood_sounds << Hash[:mood => mood, :download_url => track.source_id]
+            end
+        end
+        
+        respond_to do |format|
+            format.json {
+                render json: mood_sounds
+            }
+        end
     end
 
 end
