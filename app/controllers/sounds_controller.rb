@@ -126,7 +126,7 @@ class SoundsController < ApplicationController
                 geo = Geocoder.search(tweet.user.location)
                 unless geo.first.nil? || geo.first.geometry.nil?
                     logger.debug geo.first.geometry
-                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :id => tweet.id]
+                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :place => tweet.user.location, :id => tweet.id]
                     filtered << hhhash
                 end
                 
@@ -143,7 +143,23 @@ class SoundsController < ApplicationController
     end
     
     def cached_sounds
-    
+        tracks = Track.all
+        mood_sounds = Array.new
+        
+        tracks.each do |track|
+            unless track.mood_id.nil?
+                mood = Mood.find(track.mood_id).name
+            end
+            unless track.source_id.nil? || track.mood_id.nil?
+                mood_sounds << Hash[:mood => mood, :download_url => track.source_id]
+            end
+        end
+        
+        respond_to do |format|
+            format.json {
+                render json: mood_sounds
+            }
+        end
     end
 
 end
