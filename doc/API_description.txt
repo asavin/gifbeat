@@ -1,0 +1,9 @@
+/sounds/getsound.json
+
+Returns a JSON object of the SoundCloud track
+
+/sounds/mood.json?sound_url=...
+--sound_url is a download url to the mp3 file
+
+/sounds/mood.json?search_url=...
+--search_url is a SoundCloud url from the browser address bar

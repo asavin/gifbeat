@@ -6,10 +6,9 @@ class SoundsController < ApplicationController
         our_track = nil
         #while our_track == nil do
         #    logger.debug "hey11!"
-            tracks = client.get('/tracks', :limit => 100, :order => 'hotness')
+            tracks = client.get('/tracks', :limit => 30, :order => 'hotness')
             logger.debug "Iteration done"
             tracks.each do |track|
-                logger.debug "hey!"
                 if track.duration < 340000
                     if track.downloadable == true
                         our_track = track
@@ -28,16 +27,25 @@ class SoundsController < ApplicationController
     end
     
     def mood
+        sound_url = ""
         #SoundCloud download url
-        url = params[:sound_url] + '?client_id=13801a472d3f0fcc41f7fcd1158253a4'
+        if(params[:sound_url])
+            sound_url = params[:sound_url]
+            url = params[:sound_url] + '?client_id=13801a472d3f0fcc41f7fcd1158253a4'
+        elsif (params[:search_url])
+            # assuming this is a SoundCloud track url
+            # let's resolve this into a download url first
+            track = client.get('/resolve', :url => params[:search_url])
+            sound_url = track.download_url
+        end
         
         # Before sending the request we can check from our db if this track is already analyzed
-        if Track.find_by_source_id(params[:sound_url]).nil?
+        if Track.find_by_source_id(sound_url).nil?
         
             response = HTTParty.post('http://developer.echonest.com/api/v4/track/upload', :body => { :url=> url, :api_key => 'TKHSBUNPSWPRLPUBK'})
             if(response.code == 200)
                 json = JSON.parse(response.body)
-                Track.create(:sound_id => json['response']['track']['id'], :source_id => params[:sound_url])
+                Track.create(:sound_id => json['response']['track']['id'], :source_id => sound_url)
             end
             respond_to do |format|
                 format.json {
