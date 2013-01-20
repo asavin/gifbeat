@@ -347,6 +347,8 @@ function createApp() {
 
 function displayTweet(url, lat, long, locationName) {
   $tlJQ('#tweet-tag').remove();
+  $tlJQ('.tlThingText').remove();
+
   var a = document.createElement('a');
   a.setAttribute('href', url);
   a.setAttribute('id', 'tweet-tag');
