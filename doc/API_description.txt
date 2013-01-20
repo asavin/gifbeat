@@ -1,3 +1,5 @@
+Base URL: http://www.gifbeat.com
+
 /sounds/getsound.json
 
 Returns a JSON object of the SoundCloud track
@@ -7,3 +9,10 @@ Returns a JSON object of the SoundCloud track
 
 /sounds/mood.json?search_url=...
 --search_url is a SoundCloud url from the browser address bar
+
+/sounds/analyse_status.json?sound_url=...
+--returns a processing status from EchoNest. As soon as it is changes to "complete",
+you can ask for tweets (usually processing takes about 5-10 seconds)
+
+/tweets.json?sound_url=... 
+--returns a random amount of tweets based on the sound analyse

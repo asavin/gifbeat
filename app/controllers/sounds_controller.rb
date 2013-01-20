@@ -35,6 +35,7 @@ class SoundsController < ApplicationController
         elsif (params[:search_url])
             # assuming this is a SoundCloud track url
             # let's resolve this into a download url first
+            client = Soundcloud.new(:client_id => '13801a472d3f0fcc41f7fcd1158253a4')
             track = client.get('/resolve', :url => params[:search_url])
             sound_url = track.download_url
         end
@@ -135,6 +136,10 @@ class SoundsController < ApplicationController
             }
         end
         
+    end
+    
+    def cached_sounds
+    
     end
 
 end
