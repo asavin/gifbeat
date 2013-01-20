@@ -132,7 +132,7 @@ class SoundsController < ApplicationController
                 geo = Geocoder.search(tweet.user.location)
                 unless geo.first.nil? || geo.first.geometry.nil?
                     logger.debug geo.first.geometry
-                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :place => tweet.user.location, :id => tweet.id, :name => tweet.user.screen_name]
+                    hhhash = Hash[:text => tweet.text, :location => geo.first.geometry['location'], :place => tweet.user.location, :id => tweet.id.to_s, :name => tweet.user.screen_name]
                     filtered << hhhash
                 end
                 
