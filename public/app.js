@@ -18,7 +18,6 @@ function getMood(songUrl, downloadUrl) {
   var arg = (downloadUrl ? 'sound' : 'search');
   $.ajax({
     url: "sounds/mood.json?" + arg + "_url=" + encodeURIComponent(songUrl),
-    dataType: "text", //CHANGE THIS!!!
     success: function(data) {
       setTimeout(function() {
         TweetManager.init(songUrl); // USE data...download_url instead!
@@ -45,25 +44,6 @@ function getSCData(songUrl) {
       maxErrors--;
       if (maxErrors > 0) {
         getSCData(songUrl);
-      }
-    }
-  });
-}
-
-function getMoodAasdf(downloadUrl) {
-  $.ajax({
-    url: "sounds/mood.json?sound_url=" + encodeURIComponent(downloadUrl),
-    dataType: "text",
-    success: function() {
-      setTimeout(function() {
-        TweetManager.init(downloadUrl);
-      }, 5000);
-    },
-    error: function() {
-      console.log('error getMood', downloadUrl);
-      maxErrors--;
-      if (maxErrors > 0) {
-        getMood(downloadUrl, true);
       }
     }
   });
