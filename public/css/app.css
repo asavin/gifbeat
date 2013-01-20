@@ -30,6 +30,9 @@ h1 {
   line-height: 500px;
   top: 0;
   display: block;
+  color: white;
+  text-decoration: none;
+  text-align: center;
 }
 
 #keywords {
