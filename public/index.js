@@ -3,7 +3,7 @@ PhiloGL.unpack();
 Scene.PICKING_RES = 1;
 
 //some locals
-var $ = function(id) { return document.getElementById(id); },
+var $ge = function(id) { return document.getElementById(id); },
     $$ = function(selector) { return document.querySelectorAll(selector); },
     citiesWorker = new Worker('cities.js'),
     data = { citiesRoutes: {}, airlinesRoutes: {} },
@@ -311,7 +311,7 @@ function createApp() {
           program = app.program,
           clearOpt = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
 
-      app.tooltip = $('tooltip');
+      app.tooltip = $ge('tooltip');
 
       models.earth.onBeforeRender = function(program, camera) {
         program.setUniform('enableSpecularMap', true);
@@ -409,7 +409,7 @@ var Log = {
   
   getElem: function() {
     if (!this.elem) {
-      return (this.elem = $('log-message'));
+      return (this.elem = $ge('log-message'));
     }
     return this.elem;
   },
