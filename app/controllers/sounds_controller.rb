@@ -139,13 +139,30 @@ class SoundsController < ApplicationController
             end
         end
         
+        with_mood = Hash[:tweets => filtered, :mood => mood]
         
         respond_to do |format|
             format.json {
-                render json: filtered
+                render json: with_mood
             }
         end
         
+    end
+    
+    def current_mood
+        mood = 'indescribable'
+        track = Track.find_by_source_id(params[:sound_url])
+        unless track.nil? || track.mood_id.nil?
+            mood = Mood.find(track.mood_id).name
+        end
+        
+        mood_hash = Hash[:mood => mood]
+        
+        respond_to do |format|
+            format.json {
+                render json: mood_hash
+            }
+        end
     end
     
     def cached_sounds
