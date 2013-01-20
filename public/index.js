@@ -3,7 +3,7 @@ PhiloGL.unpack();
 Scene.PICKING_RES = 1;
 
 //some locals
-var $ = function(id) { return document.getElementById(id); },
+var $ge = function(id) { return document.getElementById(id); },
     $$ = function(selector) { return document.querySelectorAll(selector); },
     citiesWorker = new Worker('cities.js'),
     data = { citiesRoutes: {} },
@@ -311,7 +311,7 @@ function createApp() {
           program = app.program,
           clearOpt = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
 
-      app.tooltip = $('tooltip');
+      app.tooltip = $ge('tooltip');
 
       models.earth.onBeforeRender = function(program, camera) {
         program.setUniform('enableSpecularMap', true);
@@ -345,6 +345,34 @@ function createApp() {
   });
 }
 
+function displayTweet(url, lat, long, locationName) {
+  $tlJQ('#tweet-tag').remove();
+  $tlJQ('.tlThingText').remove();
+
+  var a = document.createElement('a');
+  a.setAttribute('href', url);
+  a.setAttribute('id', 'tweet-tag');
+
+  a.style.position = 'absolute';
+  a.style.width = '500px';
+  a.style.height = '500px';
+  a.style.lineHeight = '500px';
+  a.style.display = 'block';
+
+  document.getElementById("globe").appendChild(a);
+
+  
+
+  //document.getElementById('tweet-tag').setAttribute('href', url);
+  $tlJQ('#tweet-tag').tlTag('tagify');
+  centerTo(lat, long);
+  var t = setTimeout(function() {
+        $tlJQ('#tweet-tag').trigger('mouseenter');
+        $tlJQ('#tweet-tag, #tlTagContainer .tlThingText').unbind('mouseenter mouseleave');
+      }, 1500);
+  
+}
+
 //Log
 //Singleton that logs information
 //Log singleton
@@ -354,7 +382,7 @@ var Log = {
   
   getElem: function() {
     if (!this.elem) {
-      return (this.elem = $('log-message'));
+      return (this.elem = $ge('log-message'));
     }
     return this.elem;
   },

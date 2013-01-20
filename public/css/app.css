@@ -20,6 +20,16 @@ h1 {
 }
 
 #globe {
+  position: relative;
+}
+
+#globe a {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  line-height: 500px;
+  top: 0;
+  display: block;
 }
 
 #keywords {
