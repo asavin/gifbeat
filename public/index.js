@@ -30,9 +30,9 @@ models.earth = new O3D.Sphere({
   nlat: 30,
   nlong: 30,
   radius: 2,
-  uniforms: {
+  /*uniforms: {
     shininess: 32
-  },
+  },*/
   textures: ['earthbw.jpg'],
   program: 'earth'
 });
@@ -301,8 +301,6 @@ function createApp() {
       Log.write("There was an error creating the app.", true);
     },
     onLoad: function(app) {
-      Log.write('Done.', true);
-
       //Unpack app properties
       var gl = app.gl,
           scene = app.scene,
