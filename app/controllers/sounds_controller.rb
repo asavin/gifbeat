@@ -45,12 +45,14 @@ class SoundsController < ApplicationController
         
         
         # Before sending the request we can check from our db if this track is already analyzed
-        if Track.find_by_source_id(sound_url).nil?
+        track = Track.find_by_source_id(sound_url)
+        if track.nil?
         
             response = HTTParty.post('http://developer.echonest.com/api/v4/track/upload', :body => { :url=> url, :api_key => 'TKHSBUNPSWPRLPUBK'})
             if(response.code == 200)
                 json = JSON.parse(response.body)
                 Track.create(:sound_id => json['response']['track']['id'], :source_id => sound_url)
+                #return_hash = Hash[:status => 
             end
             respond_to do |format|
                 format.json {
@@ -59,7 +61,7 @@ class SoundsController < ApplicationController
             end
         else
             # We have already cached this request, cool!
-            response = Hash[:status => "analysed"]
+            response = Hash[:status => "analysed", :sound_url => track.source_id ]
             respond_to do |format|
                 format.json {
                     render json: response, :status => :created
