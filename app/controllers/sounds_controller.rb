@@ -36,9 +36,13 @@ class SoundsController < ApplicationController
             # assuming this is a SoundCloud track url
             # let's resolve this into a download url first
             client = Soundcloud.new(:client_id => '13801a472d3f0fcc41f7fcd1158253a4')
+            logger.info params[:search_url]
             track = client.get('/resolve', :url => params[:search_url])
             sound_url = track.download_url
+            url = sound_url.to_s + '?client_id=13801a472d3f0fcc41f7fcd1158253a4'    
         end
+        
+        
         
         # Before sending the request we can check from our db if this track is already analyzed
         if Track.find_by_source_id(sound_url).nil?
