@@ -59,7 +59,7 @@ class SoundsController < ApplicationController
             end
         else
             # We have already cached this request, cool!
-            response = "This track is already analyzed!"
+            response = Hash[:status => "analysed"]
             respond_to do |format|
                 format.json {
                     render json: response, :status => :created

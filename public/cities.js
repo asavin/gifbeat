@@ -33,9 +33,9 @@ function createCitiesLayer(cities) {
         cosTheta = cos(theta),
         sinPhi = sin(phi),
         cosPhi = cos(phi),
-        ux = cosTheta * sinPhi,
-        uy = cosPhi,
-        uz = sinTheta * sinPhi,
+        ux = cosTheta * sinPhi * 2.0,
+        uy = cosPhi * 2.0,
+        uz = sinTheta * sinPhi * 2.0,
         coords = [ux, uy, uz],
         r = 0,
         g = ((index / 256) >> 0) % 256,
@@ -43,7 +43,7 @@ function createCitiesLayer(cities) {
         sphere = new O3D.Sphere({
           nlat: 5,
           nlong: 5,
-          radius: 2 / 120,
+          radius: 1.5 / 120,
           pickingColors: [0, g / 255, b / 255, 1]
         }),
         tvertices = slice.call(sphere.vertices).map(function(v, i) { return coords[i % 3] + v; });
@@ -71,7 +71,7 @@ function createCitiesLayer(cities) {
     citiesIndex: cityIndex,
     program: 'layer',
     uniforms: {
-      colorUfm: [1, 1, 0.5, 1]
+      colorUfm: [1, 1, 1, 1]
     }
   };
 }

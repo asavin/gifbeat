@@ -6,8 +6,8 @@ Scene.PICKING_RES = 1;
 var $ge = function(id) { return document.getElementById(id); },
     $$ = function(selector) { return document.querySelectorAll(selector); },
     citiesWorker = new Worker('cities.js'),
-    data = { citiesRoutes: {}, airlinesRoutes: {} },
-    models = { airlines: {} }, geom = {},
+    data = { citiesRoutes: {} },
+    models = {}, geom = {},
     fx = new Fx({
       duration: 1000,
       transition: Fx.Transition.Expo.easeInOut
@@ -27,13 +27,13 @@ document.onreadystatechange = function() {
 
 //Create earth
 models.earth = new O3D.Sphere({
-  nlat: 30,
-  nlong: 30,
+  nlat: 150,
+  nlong: 150,
   radius: 2,
-  /*uniforms: {
+  uniforms: {
     shininess: 32
-  },*/
-  textures: ['earthbw.jpg'],
+  },
+  textures: ['earth2.jpg'],
   program: 'earth'
 });
 models.earth.rotation.set(Math.PI, 0,  0);
@@ -197,7 +197,7 @@ function createApp() {
         enable: true,
         ambient: {
           r: 1.0,
-          g: 0.4,
+          g: 1.0,
           b: 1.0
         }
       }
@@ -244,8 +244,8 @@ function createApp() {
       },
       onMouseWheel: function(e) {
         var camera = this.camera,
-            from = -5.125,
-            to = -2.95,
+            from = -6.0,
+            to = -2.5,
             pos = camera.position,
             pz = pos.z,
             speed = (1 - Math.abs((pz - from) / (to - from) * 2 - 1)) / 6 + 0.001;
@@ -287,7 +287,7 @@ function createApp() {
       }
     },
     textures: {
-      src: ['earthbw.jpg'],
+      src: ['earth2.jpg'],
       parameters: [{
         name: 'TEXTURE_MAG_FILTER',
         value: 'LINEAR'
@@ -325,37 +325,6 @@ function createApp() {
 
       gl.viewport(0, 0, +canvas.width, +canvas.height);
 
-      //create shadow, glow and image framebuffers
-      /*app.setFrameBuffer('world', {
-        width: 1024,
-        height: 1024,
-        bindToTexture: {
-          parameters : [ {
-            name : 'TEXTURE_MAG_FILTER',
-            value : 'LINEAR'
-          }, {
-            name : 'TEXTURE_MIN_FILTER',
-            value : 'LINEAR',
-            generateMipmap : false
-          } ]
-        },
-        bindToRenderBuffer: true
-      }).setFrameBuffer('world2', {
-        width: 1024,
-        height: 1024,
-        bindToTexture: {
-          parameters : [ {
-            name : 'TEXTURE_MAG_FILTER',
-            value : 'LINEAR'
-          }, {
-            name : 'TEXTURE_MIN_FILTER',
-            value : 'LINEAR',
-            generateMipmap : false
-          } ]
-        },
-        bindToRenderBuffer: true
-      });*/
-
       //picking scene
       scene.add(models.earth,
                 models.cities);
@@ -365,33 +334,9 @@ function createApp() {
       //$('list-wrapper').style.display = '';
 
       //Draw to screen
-      function draw() {
-        // render to a texture
-        
-        //program.earth.use();
-        //program.earth.setUniform('renderType',  0);
-        //app.setFrameBuffer('world', true);
-        
+      function draw() {  
         gl.clear(clearOpt);
         
-        //scene.renderToTexture('world');
-        //app.setFrameBuffer('world', false);
-
-        /*program.earth.use();
-        program.earth.setUniform('renderType',  -1);
-        app.setFrameBuffer('world2', true);
-        gl.clear(clearOpt);
-        scene.renderToTexture('world2');
-        app.setFrameBuffer('world2', false);*/
-
-        /*Media.Image.postProcess({
-          fromTexture: ['world-texture', 'world2-texture'],
-          toScreen: true,
-          program: 'glow',
-          width: 1024,
-          height: 1024
-        });*/
-
         scene.render();
 
         Fx.requestAnimationFrame(draw);
@@ -422,7 +367,7 @@ var Log = {
     var elem = this.getElem(),
         style = elem.parentNode.style;
 
-    elem.innerHTML = text;
+    //elem.innerHTML = text;
     style.display = '';
 
     if (hide) {
