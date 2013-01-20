@@ -24,14 +24,18 @@
         font-size:2em;
         color: white;
     }
+    .tlThingText {
+    // display: block !important;
+    }
   </style>
 </head>
-<body>
+<body onload="run()">
 
   <div id="main">
     <h1>Mood world</h1>
     <div id="globe">
-      <canvas id="map-canvas" style="border: none;" width="500" height="500"></canvas>
+      <a id="tweet-tag"></a>
+      <canvas id="map-canvas" style="border: none;" width="500" height="500" ></canvas>
     </div>
     <div id="controls">
       <div id="inputs">
@@ -53,47 +57,9 @@
   
   <div id="log-message"></div>
   <div id="tooltip"></div>
-	
+  
+  
 
-<div style="display: none">
-<input type="checkbox" id="color-map" checked /> Show color map<br/>
-<input type="checkbox" id="specular-map" checked /> Show specular map<br/>
-<input type="checkbox" id="lighting" checked /> Use lighting<br/>
-
-<h2>Point light:</h2>
-<table style="border: 0; padding: 10px;">
-<tr>
-<td><b>Location:</b>
-<td>X: <input type="text" id="lightPositionX" value="-10.0" />
-<td>Y: <input type="text" id="lightPositionY" value="4.0" />
-<td>Z: <input type="text" id="lightPositionZ" value="-20.0" />
-</tr>
-<tr>
-<td><b>Specular colour:</b>
-<td>R: <input type="text" id="specularR" value="5.0" />
-<td>G: <input type="text" id="specularG" value="5.0" />
-<td>B: <input type="text" id="specularB" value="5.0" />
-</tr>
-<tr>
-<td><b>Diffuse colour:</b>
-<td>R: <input type="text" id="diffuseR" value="0.8" />
-<td>G: <input type="text" id="diffuseG" value="0.8" />
-<td>B: <input type="text" id="diffuseB" value="0.8" />
-</tr>
-</table>
-
-<h2>Ambient light:</h2>
-<table style="border: 0; padding: 10px;">
-<tr>
-<td><b>Colour:</b>
-<td>R: <input type="text" id="ambientR" value="0.4" />
-<td>G: <input type="text" id="ambientG" value="0.4" />
-<td>B: <input type="text" id="ambientB" value="0.4" />
-</tr>
-</table>
-</div>
-
-    
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
   <script type="text/javascript" src="PhiloGL.js"></script>
@@ -101,7 +67,27 @@
   <script type="text/javascript" src="index.js"></script>
 	<script src="soundcloud.js"></script>
 
-  
+  <script>
+  function run() {
+    //$tlJQ('#globe a').tlTag('tagify');
+    
+
+    /*var t = setTimeout(function() {
+        $tlJQ('#globe a').trigger('mouseover');
+        $tlJQ('#globe a, .tlThingText').unbind('mouseenter mouseleave');
+      }, 5000);*/
+
+
+  }
+  </script>
+
+  <!-- Embed code for: Personal images -->
+  <script charset="utf-8" type="text/javascript">
+  __tlid = '129152600925798401';
+  setTimeout(function(){(function(d,t){var s=d.createElement(t),x=d.getElementsByTagName(t)[0];
+  s.type='text/javascript';s.async=true;s.src='//cdn.thinglink.me/jse/embed.js';
+  x.parentNode.insertBefore(s,x);})(document,'script');},0);
+  </script>
 
 	<script type="text/javascript">
 
